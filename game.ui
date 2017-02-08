@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Game</string>
   </property>
-  <widget class="QTableWidget" name="tableWidget">
+  <widget class="Inventory" name="tableWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -41,7 +41,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="apple">
    <property name="geometry">
     <rect>
      <x>420</x>
@@ -61,6 +61,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Inventory</class>
+   <extends>QTableWidget</extends>
+   <header location="global">inventory.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

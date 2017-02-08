@@ -15,6 +15,11 @@ public:
     explicit Game(DragWidget *parent = 0);
     ~Game();
 
+private slots:
+    void on_tableWidget_cellClicked(int row, int column);
+
+    void on_tableWidget_cellDoubleClicked(int row, int column);
+
 private:
     Ui::Game *ui;
 };

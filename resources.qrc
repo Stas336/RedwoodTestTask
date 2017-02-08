@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>../../../Downloads/apple bite.mp3</file>
         <file>../../../Downloads/rsz_apple.jpg</file>
+        <file>../../../Downloads/apple_bite.mp3</file>
     </qresource>
 </RCC>

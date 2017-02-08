@@ -8,14 +8,15 @@
 
 class DragWidget : public QFrame
 {
+    Q_OBJECT
 public:
     DragWidget(QWidget *parent = 0);
-
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    bool isCopied = false;
 };
 
 #endif // DRAGWIDGET_H

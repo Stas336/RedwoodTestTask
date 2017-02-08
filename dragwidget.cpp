@@ -1,5 +1,7 @@
 #include "dragwidget.h"
 #include <item.h>
+#include <qlabel.h>
+#include <inventory.h>
 
 DragWidget::DragWidget(QWidget *parent)
 : QFrame(parent)
@@ -7,14 +9,14 @@ DragWidget::DragWidget(QWidget *parent)
 setMinimumSize(200, 200);
 setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
 setAcceptDrops(true);
-
-Item *apple = new Item("Apple", this);
-QLabel *boatIcon = new QLabel(this);
-boatIcon->setObjectName(QString("BOAT")); //<---- here
-boatIcon->setPixmap(QPixmap(":/images/boat.png"));
-boatIcon->move(20, 20);
-boatIcon->show();
-boatIcon->setAttribute(Qt::WA_DeleteOnClose);
+Item *apple = new Item(this);
+apple->move(420,180);
+apple->setObjectName(QString("Apple"));
+apple->setAmount(1);
+apple->setName("Apple");
+apple->show();
+apple->setPixmap(QPixmap(":/Downloads/rsz_apple.jpg"));
+apple->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -98,11 +100,25 @@ painter.fillRect(pixmap.rect(), QColor(127, 127, 127, 127));
 painter.end();
 
 child->setPixmap(tempPixmap);
-
-if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction)
-child->close();
-else {
-child->show();
-child->setPixmap(pixmap);
+if (this->isCopied)
+{
+    if (drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction) == Qt::MoveAction)
+    child->close();
+    else {
+    child->show();
+    child->setPixmap(pixmap);
+    }
+}
+else
+{
+    if (drag->exec(/*Qt::CopyAction | Qt::MoveAction, */Qt::CopyAction) == Qt::MoveAction)
+    {
+        this->isCopied = true;
+        child->close();
+    }
+    else {
+    child->show();
+    child->setPixmap(pixmap);
+    }
 }
 }
