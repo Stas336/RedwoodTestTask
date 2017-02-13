@@ -2,6 +2,7 @@
 #include "ui_game.h"
 #include <item.h>
 #include <qmediaplayer.h>
+#include <mainwindow.h>
 
 Game::Game(DragWidget *parent) :
 DragWidget(parent),
@@ -25,10 +26,12 @@ Game::~Game()
 void Game::on_tableWidget_cellClicked(int row, int column)
 {
     qDebug("You have selected Column: %d, Row: %d", column, row);
+    ui->appleCount->display(0);
     if (ui->tableWidget->item(row, column) != NULL)
     {
         int amount = static_cast<Item*>(ui->tableWidget->item(row, column))->getAmount();
         qDebug("Apples amount: %d", amount);
+        ui->appleCount->display(amount);
     }
 }
 void Game::on_tableWidget_cellDoubleClicked(int row, int column)
@@ -45,6 +48,7 @@ void Game::on_tableWidget_cellDoubleClicked(int row, int column)
         if (amount > 0)
         {
             qDebug("Apples amount: %d", amount);
+            ui->appleCount->display(amount);
             item->setAmount(amount);
             item->setData(Qt::DecorationRole, QPixmap(":/Downloads/rsz_apple.jpg"));
             player->play();
@@ -52,10 +56,19 @@ void Game::on_tableWidget_cellDoubleClicked(int row, int column)
         }
         else if (amount == 0)
         {
-            qDebug("Apples amount: %d", amount);
+            qDebug("Apples amount DELETE: %d", amount);
+            ui->appleCount->display(amount);
             item->setAmount(amount);
             player->play();
+            item = NULL;
             ui->tableWidget->setItem(row, column, item);
         }
     }
+}
+
+void Game::on_returnButton_clicked()
+{
+    MainWindow *mainWindow = new MainWindow();
+    mainWindow->show();
+    this->close();
 }

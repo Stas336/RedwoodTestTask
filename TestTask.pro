@@ -28,14 +28,12 @@ SOURCES += main.cpp\
     game.cpp \
     item.cpp \
     inventory.cpp \
-    database.cpp \
     dragwidget.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
     item.h \
     inventory.h \
-    database.h \
     dragwidget.h
 
 FORMS    += mainwindow.ui \
