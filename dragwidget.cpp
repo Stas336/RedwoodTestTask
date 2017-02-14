@@ -9,14 +9,14 @@ DragWidget::DragWidget(QWidget *parent)
 setMinimumSize(200, 200);
 setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
 setAcceptDrops(true);
-Item *apple = new Item(this);
+/*Item *apple = new Item(this);
 apple->move(420,180);
 apple->setObjectName(QString("Apple"));
 apple->setAmount(1);
 apple->setName("Apple");
 apple->show();
 apple->setPixmap(QPixmap(":/Downloads/rsz_apple.jpg"));
-apple->setAttribute(Qt::WA_DeleteOnClose);
+apple->setAttribute(Qt::WA_DeleteOnClose);*/
 }
 
 void DragWidget::dragEnterEvent(QDragEnterEvent *event)

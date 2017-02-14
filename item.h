@@ -16,6 +16,8 @@ public:
 private:
     std::string name;
     int amount;
+signals:
+    void appleMoving();
 };
 
 #endif // ITEM_H

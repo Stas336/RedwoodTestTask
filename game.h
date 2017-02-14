@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <dragwidget.h>
+#include <qsqldatabase.h>
 
 namespace Ui {
 class Game;
@@ -21,6 +22,8 @@ private slots:
     void on_tableWidget_cellDoubleClicked(int row, int column);
 
     void on_returnButton_clicked();
+
+    void on_apple_added(int count);
 
 private:
     Ui::Game *ui;

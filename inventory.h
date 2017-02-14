@@ -13,8 +13,9 @@ public:
         void clear();
         void changed(const QMimeData *mimeData = 0);
         void dropped(QPoint *pos, const QMimeData *mimeData = 0);
+        void onAppleMoving();
     signals:
-
+        void appleAdded(int count);
     protected:
         void dragEnterEvent(QDragEnterEvent *event);
         void dragMoveEvent(QDragMoveEvent *event);
@@ -30,6 +31,7 @@ public:
     private:
         int prevApples;
         bool isDropStarted;
+        bool isAppleMoving;
         QPoint *startCoordinates;
 };
 

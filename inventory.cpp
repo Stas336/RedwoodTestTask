@@ -2,6 +2,8 @@
 #include "inventory.h"
 #include <item.h>
 #include <QTableWidgetItem>
+#include <game.h>
+#include <qsqlquery.h>
 
 Inventory::Inventory(QWidget *parent) : QTableWidget(parent) {
     //set widget default properties:
@@ -17,6 +19,7 @@ Inventory::Inventory(QWidget *parent) : QTableWidget(parent) {
     setAcceptDrops(true);
     prevApples = 0;
     isDropStarted = false;
+    isAppleMoving = false;
     startCoordinates = new QPoint();
 }
 
@@ -56,31 +59,46 @@ void Inventory::clear() {
 
 void Inventory::dropped(QPoint *pos, const QMimeData *mimeData)
 {
+    QSqlQuery query;
     Item *item = new Item(this);
-    if (this->item(pos->x(), pos->y()) != NULL)
+    if (this->item(pos->x(), pos->y()) != NULL && isAppleMoving)
     {
         if (this->item(pos->x(), pos->y()) != this->item(getStartCoordinates()->x(), getStartCoordinates()->y()))
         {
             int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
             qDebug("Start amount: %d, Final amount: %d", prevApples, amount);
             item->setAmount(amount + prevApples);
+            emit appleAdded(amount + prevApples);
             prevApples = 0;
+            delete this->item(getStartCoordinates()->x(), getStartCoordinates()->y());
         }
         else
         {
             int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
             item->setAmount(amount + 1);
+            emit appleAdded(amount + 1);
             prevApples = 0;
         }
     }
     else
     {
+        query.prepare("INSERT INTO apples (coordinates, amount) "
+                          "VALUES (:coordinates, :amount)");
+            query.bindValue(":coordinates", pos->x());
+            query.bindValue(":amount", 1);
+            query.exec();
         item->setAmount(1);
+        emit appleAdded(1);
     }
     //item->setData(Qt::DecorationRole, QPixmap::fromImage(qvariant_cast<QImage>(mimeData->imageData())));
-    item->setData(Qt::DecorationRole, QPixmap(":/Downloads/rsz_apple.jpg"));
+    item->setData(Qt::DecorationRole, QPixmap(":/resources/rsz_apple.jpg"));
     this->setItem(pos->x(), pos->y(), item);
     setDropStarted(false);
+    query.exec("select * from apples");
+    while(query.next())
+            {
+                qDebug() << query.value(0).toString();
+            }
 }
 
 void Inventory::changed(const QMimeData *mimeData)
@@ -112,4 +130,8 @@ bool Inventory::DropStarted()
 void Inventory::setDropStarted(bool value)
 {
     this->isDropStarted = value;
+}
+void Inventory::onAppleMoving()
+{
+    isAppleMoving = true;
 }
