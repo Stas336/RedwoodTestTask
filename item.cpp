@@ -1,6 +1,6 @@
 #include "item.h"
 
-Item::Item(QWidget *parent):QTableWidgetItem(), QLabel()
+Item::Item(QWidget *parent):QTableWidgetItem()
 {
     this->name = "";
     this->amount = 1;

@@ -5,7 +5,7 @@
 #include <qtablewidget.h>
 #include <qlabel.h>
 
-class Item : public QTableWidgetItem, public QLabel
+class Item : public QTableWidgetItem
 {
 public:
     Item(QWidget *parent = 0);

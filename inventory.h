@@ -10,12 +10,10 @@ public:
         Inventory(QWidget *parent = 0);
 
     public slots:
-        void clear();
-        void changed(const QMimeData *mimeData = 0);
         void dropped(QPoint *pos, const QMimeData *mimeData = 0);
-        void onAppleMoving();
     signals:
-        void appleAdded(int count);
+        void appleAdded(int count, QPoint *pos);
+        void appleDeleted(int count, QPoint *pos);
     protected:
         void dragEnterEvent(QDragEnterEvent *event);
         void dragMoveEvent(QDragMoveEvent *event);
@@ -28,10 +26,13 @@ public:
         void setDropStarted(bool value);
         QPoint* getStartCoordinates();
         void setStartCoordinates(int x, int y);
+        void setIsAppleMoving(bool boolean);
+        void setDefaultAppleAmount(int amount);
     private:
         int prevApples;
         bool isDropStarted;
         bool isAppleMoving;
+        int defaultAppleAmount;
         QPoint *startCoordinates;
 };
 

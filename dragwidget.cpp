@@ -35,6 +35,7 @@ event->ignore();
 
 void DragWidget::dragMoveEvent(QDragMoveEvent *event)
 {
+emit dropStarted();
 if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
 if (event->source() == this) {
 event->setDropAction(Qt::MoveAction);

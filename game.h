@@ -3,6 +3,8 @@
 
 #include <dragwidget.h>
 #include <qsqldatabase.h>
+#include <qpoint.h>
+#include <database.h>
 
 namespace Ui {
 class Game;
@@ -23,10 +25,17 @@ private slots:
 
     void on_returnButton_clicked();
 
-    void on_apple_added(int count);
+    void on_apple_added(int amount, QPoint *pos);
+
+    void on_apple_deleted(int amount, QPoint *pos);
+
+    void on_apple_moving();
+
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::Game *ui;
+    Database db;
 };
 
 #endif // GAME_H

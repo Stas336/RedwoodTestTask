@@ -17,6 +17,9 @@ protected:
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     bool isCopied = false;
+signals:
+    void dropStarted();
+
 };
 
 #endif // DRAGWIDGET_H

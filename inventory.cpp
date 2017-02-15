@@ -6,13 +6,11 @@
 #include <qsqlquery.h>
 
 Inventory::Inventory(QWidget *parent) : QTableWidget(parent) {
-    //set widget default properties:
     setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
     setDragDropMode(QAbstractItemView::DragDrop);
     setDragDropMode(QAbstractItemView::InternalMove);
-    //setAlternatingRowColors(true);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setShowGrid(true);
     setWordWrap(true);
@@ -25,7 +23,6 @@ Inventory::Inventory(QWidget *parent) : QTableWidget(parent) {
 
 void Inventory::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
-    emit changed(event->mimeData());
 }
 
 void Inventory::dragMoveEvent(QDragMoveEvent *event) {
@@ -53,57 +50,60 @@ void Inventory::dragLeaveEvent(QDragLeaveEvent *event) {
     event->accept();
 }
 
-void Inventory::clear() {
-    emit changed();
-}
-
 void Inventory::dropped(QPoint *pos, const QMimeData *mimeData)
 {
-    QSqlQuery query;
     Item *item = new Item(this);
-    if (this->item(pos->x(), pos->y()) != NULL && isAppleMoving)
+    if (!isAppleMoving)
     {
-        if (this->item(pos->x(), pos->y()) != this->item(getStartCoordinates()->x(), getStartCoordinates()->y()))
+        if (this->item(pos->x(), pos->y()) != NULL)
         {
-            int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
-            qDebug("Start amount: %d, Final amount: %d", prevApples, amount);
-            item->setAmount(amount + prevApples);
-            emit appleAdded(amount + prevApples);
-            prevApples = 0;
-            delete this->item(getStartCoordinates()->x(), getStartCoordinates()->y());
+            if (this->item(pos->x(), pos->y()) != this->item(getStartCoordinates()->x(), getStartCoordinates()->y()))
+            {
+                int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
+                qDebug("Start amount: %d, Final amount: %d", prevApples, amount);
+                item->setAmount(amount + prevApples);
+                emit appleAdded(amount + prevApples, pos);
+                prevApples = 0;
+                Item *item1 = static_cast<Item*>(this->item(getStartCoordinates()->x(), getStartCoordinates()->y()));
+                item1->setAmount(0);
+                this->setItem(getStartCoordinates()->x(), getStartCoordinates()->y(), item1);
+                emit appleDeleted(amount, getStartCoordinates());
+                //delete this->item(getStartCoordinates()->x(), getStartCoordinates()->y());
+                //removeCellWidget(getStartCoordinates()->x(), getStartCoordinates()->y());
+            }
         }
         else
         {
-            int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
-            item->setAmount(amount + 1);
-            emit appleAdded(amount + 1);
-            prevApples = 0;
+            int amount = static_cast<Item*>(this->item(getStartCoordinates()->x(), getStartCoordinates()->y()))->getAmount();
+            item->setAmount(amount);
+            emit appleAdded(amount, pos);
+            Item *item1 = static_cast<Item*>(this->item(getStartCoordinates()->x(), getStartCoordinates()->y()));
+            item1->setAmount(0);
+            this->setItem(getStartCoordinates()->x(), getStartCoordinates()->y(), item1);
+            //removeCellWidget(getStartCoordinates()->x(), getStartCoordinates()->y());
+            //delete this->item(getStartCoordinates()->x(), getStartCoordinates()->y());
+            emit appleDeleted(amount, getStartCoordinates());
         }
     }
     else
     {
-        query.prepare("INSERT INTO apples (coordinates, amount) "
-                          "VALUES (:coordinates, :amount)");
-            query.bindValue(":coordinates", pos->x());
-            query.bindValue(":amount", 1);
-            query.exec();
-        item->setAmount(1);
-        emit appleAdded(1);
+        if (this->item(pos->x(), pos->y()) != NULL)
+        {
+            int amount = static_cast<Item*>(this->item(pos->x(), pos->y()))->getAmount();
+            item->setAmount(amount + defaultAppleAmount);
+            isAppleMoving = false;
+            emit appleAdded(amount + defaultAppleAmount, pos);
+        }
+        else
+        {
+            item->setAmount(defaultAppleAmount);
+            isAppleMoving = false;
+            emit appleAdded(defaultAppleAmount, pos);
+        }
     }
-    //item->setData(Qt::DecorationRole, QPixmap::fromImage(qvariant_cast<QImage>(mimeData->imageData())));
     item->setData(Qt::DecorationRole, QPixmap(":/resources/rsz_apple.jpg"));
     this->setItem(pos->x(), pos->y(), item);
     setDropStarted(false);
-    query.exec("select * from apples");
-    while(query.next())
-            {
-                qDebug() << query.value(0).toString();
-            }
-}
-
-void Inventory::changed(const QMimeData *mimeData)
-{
-
 }
 
 int Inventory::getPrevApples()
@@ -131,7 +131,11 @@ void Inventory::setDropStarted(bool value)
 {
     this->isDropStarted = value;
 }
-void Inventory::onAppleMoving()
+void Inventory::setIsAppleMoving(bool boolean)
 {
-    isAppleMoving = true;
+    isAppleMoving = boolean;
+}
+void Inventory::setDefaultAppleAmount(int amount)
+{
+    defaultAppleAmount = amount;
 }
