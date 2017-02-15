@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia sql
+QT       += core gui multimedia sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,17 +29,20 @@ SOURCES += main.cpp\
     item.cpp \
     inventory.cpp \
     dragwidget.cpp \
-    database.cpp
+    database.cpp \
+    networkdialog.cpp
 
 HEADERS  += mainwindow.h \
     game.h \
     item.h \
     inventory.h \
     dragwidget.h \
-    database.h
+    database.h \
+    networkdialog.h
 
 FORMS    += mainwindow.ui \
-    game.ui
+    game.ui \
+    networkdialog.ui
 
 RESOURCES += \
     resources.qrc

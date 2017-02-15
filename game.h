@@ -5,6 +5,9 @@
 #include <qsqldatabase.h>
 #include <qpoint.h>
 #include <database.h>
+#include <qtcpserver.h>
+#include <qtcpsocket.h>
+#include <qhostaddress.h>
 
 namespace Ui {
 class Game;
@@ -15,7 +18,9 @@ class Game : public DragWidget
     Q_OBJECT
 
 public:
-    explicit Game(DragWidget *parent = 0);
+    explicit Game(bool isServer, DragWidget *parent = 0);
+    void send(QTcpSocket* pSocket, const QString& str);
+    void synchronize();
     ~Game();
 
 private slots:
@@ -33,9 +38,18 @@ private slots:
 
     void closeEvent(QCloseEvent *event);
 
+    void on_client_connection();
+
+    void on_server_connection();
+
+    void read();
+
 private:
     Ui::Game *ui;
     Database db;
+    QTcpServer *server;
+    QTcpSocket *client;
+    bool isServer;
 };
 
 #endif // GAME_H

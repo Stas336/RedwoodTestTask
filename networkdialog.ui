@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NetworkDialog</class>
+ <widget class="QDialog" name="NetworkDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>120</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Choose Mode</string>
+  </property>
+  <widget class="QPushButton" name="clientButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>201</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Client</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="serverButton">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>0</y>
+     <width>201</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Server</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -103,14 +103,13 @@ bool Database::removeApple(int amount, QPoint *pos)
     if (database.isOpen())
     {
         QSqlQuery query;
-        int amount1;
         query.prepare("SELECT amount FROM inventory WHERE posx=? AND posy=?");
         query.addBindValue(pos->x());
         query.addBindValue(pos->y());
         query.exec();
         while (query.next())
         {
-            amount1 = query.value(0).toInt();
+            int amount1 = query.value(0).toInt();
             qDebug("Apples from db. Amount: %d. POSX: %d. POSY: %d", amount1, pos->x(), pos->y());
             query.prepare("UPDATE inventory SET amount=? WHERE posx=? AND posy=?");
             query.addBindValue(amount1 - amount);

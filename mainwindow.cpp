@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <game.h>
+#include <networkdialog.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,7 +21,7 @@ void MainWindow::on_exitButton_clicked()
 
 void MainWindow::on_playButton_clicked()
 {
-    Game *game = new Game();
-    game->show();
+    NetworkDialog *dialog = new NetworkDialog();
+    dialog->show();
     this->close();
 }

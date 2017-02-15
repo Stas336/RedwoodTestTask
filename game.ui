@@ -66,8 +66,8 @@
   <widget class="QPushButton" name="returnButton">
    <property name="geometry">
     <rect>
-     <x>190</x>
-     <y>10</y>
+     <x>170</x>
+     <y>0</y>
      <width>201</width>
      <height>51</height>
     </rect>
